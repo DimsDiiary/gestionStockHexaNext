@@ -1,0 +1,145 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Projet {
+  id           String        @id @default(cuid())
+  nom_projet   String
+  os           String
+  budget       Float
+  description  String
+  date_debut   DateTime
+  date_fin     DateTime
+  chantiers    Chantier[] // Ajout de cette ligne
+  grandCaisses GrandCaisse[]
+  magasins     Magasin[]
+  petitCaisses PetitCaisse[]
+  userId       String?
+  user         User?         @relation(fields: [userId], references: [id])
+}
+
+model Chantier {
+  id            String @id @default(cuid())
+  fkt           String
+  lieu_chantier String
+  nature        String
+  capacite      String
+  code_chantier String
+  projetId      String?
+  projet        Projet? @relation(fields: [projetId], references: [id])
+}
+
+model GrandCaisse {
+  id            String   @id @default(cuid())
+  date          DateTime
+  libelle       String
+  montant       Float
+  mode_paiement String
+  projetId      String?
+  projet        Projet?  @relation(fields: [projetId], references: [id])
+}
+
+model Magasin {
+  id           String @id @default(cuid())
+  lieu_magasin String
+  code_magasin String
+  projetId     String
+  projet       Projet @relation(fields: [projetId], references: [id])
+}
+
+model PetitCaisse {
+  id       String   @id @default(cuid())
+  date     DateTime
+  libelle  String
+  debit    Float
+  credit   Float
+  solde    Float
+  projetId String? // Rendre projetId nullable
+  projet   Projet?  @relation(fields: [projetId], references: [id])
+}
+
+model Achat {
+  id            String   @id @default(cuid())
+  date          DateTime
+  designation   String
+  nombre        Float
+  prix_unitaire Float
+  total         Float
+  uniteId       String
+  unite         Unite    @relation(fields: [uniteId], references: [id])
+  classeId      String
+  classe        Classe   @relation(fields: [classeId], references: [id])
+  entres        Entre[]
+  sorties       Sortie[]
+  stock         Stock?
+}
+
+model Entre {
+  id          String   @id @default(cuid())
+  date        DateTime
+  designation String?
+  unite       String?
+  nombre      Float
+  classe      String?
+  source      String?
+  observation String?
+  destination String?
+  achat       Achat?   @relation(fields: [achatId], references: [id])
+  achatId     String?
+}
+
+model Sortie {
+  id          String   @id @default(cuid())
+  date        DateTime
+  designation String? // Changé en optionnel car il peut venir de l'achat
+  unite       String? // Changé en optionnel
+  nombre      String
+  classe      String? // Changé en optionnel
+  source      String? // Changé en optionnel
+  destination String? // Changé en optionnel
+  observation String? // Changé en optionnel
+  achatId     String?  @map("achat_id")
+  achat       Achat?   @relation(fields: [achatId], references: [id])
+}
+
+model Stock {
+  id        String   @id @default(cuid())
+  total     Float
+  achat     Achat    @relation(fields: [achatId], references: [id])
+  achatId   String   @unique
+  updatedAt DateTime @updatedAt
+}
+
+model Classe {
+  id     String  @id @default(cuid())
+  nom    String
+  achats Achat[]
+}
+
+model Unite {
+  id      String  @id @default(cuid())
+  nom     String
+  symbole String
+  achats  Achat[]
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  firstName String
+  lastName  String
+  role      Role
+  password  String
+  projets   Projet[]
+}
+
+enum Role {
+  ADMIN
+  GESTIONNAIRE
+  COMPTABLE
+}
