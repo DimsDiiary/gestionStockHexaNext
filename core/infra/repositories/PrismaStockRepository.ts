@@ -11,16 +11,39 @@ export class PrismaStockRepository implements IStockRepository {
   }
   async calculateAllStocks(): Promise<Stock[]> {
     const stocks = await this.prisma.stock.findMany();
-    return stocks.map(stock => {
-      const stockEntity = new Stock(stock);
-      return stockEntity;
-    });
+    return stocks.map(stock => ({
+      id: stock.id,
+      total: stock.total,
+      achatId: stock.achatId,
+      updatedAt: stock.updatedAt,
+      designation: '',
+      unite: '',
+      totalEntrees: 0,
+      totalSorties: 0,
+      sources: [],
+      destinations: [],
+      classe: '',
+      stockDisponible: 0,
+    }));
   }
 
   async getStockDetailsForAchat(achatId: string): Promise<StockDetails | null> {
     const stockData = await this.prisma.stock.findUnique({
       where: { achatId: achatId },
     });
-    return stockData ? new Stock(stockData).toStockDetails() : null;
+    if (!stockData) return null;
+    return {
+      achatId: stockData.achatId,
+      designation: '',
+      unite: '',
+      totalEntrees: 0,
+      entrees: [],
+      sorties: [],
+      totalSorties: 0,
+      sources: [],
+      destinations: [],
+      classe: '',
+      stockDisponible: stockData.total,
+    };
   }
 }
