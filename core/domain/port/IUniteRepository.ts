@@ -1,4 +1,4 @@
-import { Unite } from "../entities/Unite";
+import { Unite } from '../entities/Unite';
 
 export interface IUniteRepository {
     create(unite: Unite): Promise<Unite>;
@@ -6,4 +6,5 @@ export interface IUniteRepository {
     findById(id: string): Promise<Unite | null>;
     update(unite: Unite): Promise<Unite>;
     delete(id: string): Promise<void>;
+    isUsedInAchat(id: string): Promise<boolean>;
 }

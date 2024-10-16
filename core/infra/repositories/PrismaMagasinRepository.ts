@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { IMagasinRepository } from '../../domain/port/IMagasinRepository';
-import { Magasin, MagasinId, NewMagasin, UptadeMagasin } from '../../domain/entities/Magasin';
+import { IMagasinRepository } from '@/core/domain/port/IMagasinRepository';
+import { Magasin, MagasinId, NewMagasin, UptadeMagasin } from '@/core/domain/entities/Magasin';
 
 export class PrismaMagasinRepository implements IMagasinRepository {
   private prisma: PrismaClient;

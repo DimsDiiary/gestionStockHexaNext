@@ -3,11 +3,11 @@ import { z } from 'zod';
 export const projetSchema = z.object({
   nom_projet: z.string(),
   os: z.string(),
-  budget: z.number(),
+  date_debut: z.string(), // ou z.date() si vous utilisez des objets Date
+  date_fin: z.string(), // ou z.date() si vous utilisez des objets Date
+  budget: z.number().or(z.string()), // accepte un nombre ou une chaîne qui sera parsée en nombre
   description: z.string(),
-  date_debut: z.string(),
-  date_fin: z.string(),
-  userId: z.string() // Add this line to include userId in the schema
+  userId: z.string().optional() // Rend userId optionnel
 }).refine(data => data.date_fin >= data.date_debut, {
   message: "La date de fin doit être après ou égale à la date de début",
   path: ['date_fin']

@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { IAchatRepository } from "../../domain/port/IAchatRepository";
-import { Achat, AchatId, NewAchat } from "../../domain/entities/Achat";
+import { IAchatRepository } from "@/core/domain/port/IAchatRepository";
+import { Achat, AchatId, NewAchat } from "@/core/domain/entities/Achat";
 import { PrismaAchatSchema } from '@/lib/type';
 import { z } from 'zod';
 

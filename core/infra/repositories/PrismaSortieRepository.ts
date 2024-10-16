@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { ISortieRepository } from '../../domain/port/ISortieRepository';
-import { Sortie, SortieId, NewSortie, UpdateSortie } from '../../domain/entities/Sortie';
+import { ISortieRepository } from '@/core/domain/port/ISortieRepository';
+import { Sortie, SortieId, NewSortie, UpdateSortie } from '@/core/domain/entities/Sortie';
 import { Prisma } from '@prisma/client';
 
 export class PrismaSortieRepository implements ISortieRepository {

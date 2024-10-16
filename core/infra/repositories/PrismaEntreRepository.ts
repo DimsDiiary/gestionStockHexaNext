@@ -1,6 +1,6 @@
 import { PrismaClient } from '@prisma/client';
-import { IEntreRepository } from '../../domain/port/IEntreRepository';
-import { Entre, EntreId, NewEntre, UpdateEntre } from '../../domain/entities/Entre';
+import { IEntreRepository } from '@/core/domain/port/IEntreRepository';
+import { Entre, EntreId, NewEntre, UpdateEntre } from '@/core/domain/entities/Entre';
 
 export class PrismaEntreRepository implements IEntreRepository {
   private prisma: PrismaClient;
